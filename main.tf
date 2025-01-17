@@ -100,3 +100,60 @@ resource "aws_instance" "test1" {
   user_data = fileexists("testscript.sh") ? base64encode(file("testscript.sh")) : ""
 }
 
+resource "aws_instance" "test2" {
+  ami = "ami-00bb6a80f01f03502"
+  instance_type = "t2.micro"
+  vpc_security_group_ids = [aws_security_group.sg1.id]
+  subnet_id = aws_subnet.test_subnet2.id
+  user_data = fileexists("testscript.sh") ? base64decode(file("testscript.sh")) : ""
+}
+
+resource "aws_lb" "lb1" {
+  name = "lb1"
+  internal = "false"
+  load_balancer_type = "application"
+  security_groups = [aws_security_group.sg1.id]
+  subnets = [aws_subnet.test_subnet1, aws_subnet.test_subnet2]
+  tags = {
+    name =  "lb1"
+  }
+}
+
+resource "aws_lb_target_group" "tg" {
+  vpc_id = aws_vpc.test.id
+  name = "tg"
+  port = 80
+  protocol = "http"
+
+  health_check {
+    path = "/"
+    port = "traffic-port"
+  }
+}
+
+resource "aws_lb_target_group_attachment" "tg-1" {
+  target_group_arn = aws_lb.lb1.arn
+  target_id = aws_instance.test1.iam_id
+  port = 80
+}
+
+resource "aws_lb_target_group_attachment" "tg-2" {
+  target_group_arn = aws_lb_target_group.tg.arn
+  target_id = aws_instance.test2.iam_id
+  port = 80
+}
+
+resource "aws_lb_listener" "lister" {
+  load_balancer_arn = aws_lb.lb1.arn
+  port = 80
+  protocol = "HTTP"
+
+  default_action {
+    target_group_arn = aws_lb_target_group.tg.arn
+    type = "forward"
+  }
+}
+
+output "loadbalancerdns" {
+  value = aws_lb.lb1.dns_name
+}
