@@ -139,7 +139,7 @@ resource "aws_lb_target_group_attachment" "tg-1" {
 
 resource "aws_lb_target_group_attachment" "tg-2" {
   target_group_arn = aws_lb_target_group.tg.arn
-  target_id = aws_instance.test2.iam.id
+  target_id = aws_instance.test1.id
   port = 80
 }
 
