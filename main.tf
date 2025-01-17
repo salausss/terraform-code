@@ -99,6 +99,7 @@ resource "aws_instance" "test1" {
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.sg1.id]
   subnet_id = aws_subnet.test_subnet1.id
+  availability_zone = "ap-south-1a"
   user_data = fileexists("testscript.sh") ? base64encode(file("testscript.sh")) : ""
 }
 
@@ -107,6 +108,7 @@ resource "aws_instance" "test2" {
   instance_type = "t2.micro"
   vpc_security_group_ids = [aws_security_group.sg1.id]
   subnet_id = aws_subnet.test_subnet2.id
+  availability_zone = "ap-south-1b"
   user_data = fileexists("testscript.sh") ? base64encode(file("testscript.sh")) : ""
 }
 
