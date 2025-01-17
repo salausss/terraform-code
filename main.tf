@@ -96,7 +96,7 @@ resource "aws_instance" "test1" {
   ami = "ami-00bb6a80f01f03502"
   instance_type = "t2.micro"
   vpc_security_group_ids = ["aws_security_group.sg1.id"]
-  subnet_id = "aws_subnet.test_subnet1.id"
+  subnet_id = ["aws_subnet.test_subnet1.id"]
   user_data = fileexists("testscript.sh") ? base64encode(file("testscript.sh")) : ""
 }
 
