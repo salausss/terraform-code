@@ -84,9 +84,9 @@ resource "aws_security_group" "sg1" {
 }
 
 resource "aws_s3_bucket" "test_bucket_salah_0001" {
-    bucket = "test_bucket_salah_0001"
+    bucket = "test-bucket-salah-0001"
     tags = {
-      name = "test_bucket_salah_0001"
+      name = "test-bucket-salah-0001"
 
     }
 
