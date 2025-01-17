@@ -113,7 +113,7 @@ resource "aws_lb" "lb1" {
   internal = "false"
   load_balancer_type = "application"
   security_groups = [aws_security_group.sg1.id]
-  subnets = [aws_subnet.test_subnet1, aws_subnet.test_subnet2]
+  subnets = [aws_subnet.test_subnet1.id, aws_subnet.test_subnet2.id]
   tags = {
     name =  "lb1"
   }
