@@ -14,6 +14,7 @@ variable "subnet_id" {
 
 variable "security_groups" {
   description = "this "
-  default = "sg-0cab2d96c1e98f4c7"
+  #default = "sg-0cab2d96c1e98f4c7"
+  default = "default"
   
 }
